@@ -1,5 +1,4 @@
 import React from 'react'
-import Ocr from '../components/Ocr'
 import Header from '../components/Header'
 import Filter from '../components/Filter'
 
@@ -8,7 +7,7 @@ const Home = ()=>{
         <>
             <Header />
             <Filter />
-            <Ocr />
+            
         </>
     )
 }
