@@ -9,7 +9,7 @@ const Ocr = ({image})=>{
         const worker = createWorker({
             logger: m => console.log(m),
           });
-          if (image != "") {
+          if (image !== "") {
             const doOCR = async () => {
                 setOcr('PROCESANDO ...');
                 await worker.load();
@@ -18,7 +18,6 @@ const Ocr = ({image})=>{
                 const { data: { text } } =await worker.recognize(image);
                 let arr = text.split(" ")
                 setList(arr)
-                console.log(text)
                 await worker.terminate();
                 setOcr('');
             };
@@ -28,15 +27,22 @@ const Ocr = ({image})=>{
       },[image]);
     return(
         <>
-            <p>{ocr}</p>
-            <ul style={{ height: '500px'}}
-            className="overflow-y-scroll bg-gray-400 text-gray-700 p-2">
-            {
-                list.map((item,id)=>{
-                    return <li key={id}>{item}</li>
-                })
-            }
-             </ul>
+         <div className="flex flex-wrap">
+            <div className="w-full  md:w-1/2 lg:w-1/2  mb-4">  
+                <img src={ image } width="300" style={{ margin: 'auto'}} alt="imagen" /> 
+            </div> 
+            <div className="w-full  md:w-1/2 lg:w-1/2  mb-4">
+                <p>{ocr}</p>
+                <ul style={{ height: '500px'}}
+                    className="overflow-y-scroll bg-gray-400 text-gray-700 p-2">
+                    {
+                        list.map((item,id)=>{
+                            return <li key={id}>{item}</li>
+                        })
+                    }
+                </ul>
+            </div>
+        </div> 
         </>
     )
 }

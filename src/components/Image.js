@@ -1,33 +1,39 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import Ocr from '../components/Ocr'
+import ImgCrop from './ImgCrop'
+import  getCroppedImg from '../utils'
 
 const Image = ()=>{
-    const [image, setImage] = useState({preview: '', raw: ''})
+    const [imageCrop, setImageCrop] = useState('')
     const [imageOcr, setImageOcr] = useState('')
+    const [croppedAreaPixels, setCroppedAreaPixels] = useState(null)
+ 
     const handleChange = (e) => {
-        setImage({
-          preview: URL.createObjectURL(e.target.files[0]),
-          raw: e.target.files[0]
-        })
-        setImageOcr(URL.createObjectURL(e.target.files[0]))
-      }
+        setImageOcr("")
+        setImageCrop(URL.createObjectURL(e.target.files[0]))
+    }
+    const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
+        setCroppedAreaPixels(croppedAreaPixels)
+    }, [])
+
+    const showCroppedImage = useCallback(async () => {
+        try {
+            const croppedImage = await getCroppedImg(imageCrop,croppedAreaPixels)
+            setImageCrop("")
+            setImageOcr(croppedImage)
+        } catch (e) {
+            console.error(e)
+        }
+    }, [croppedAreaPixels])
 
     return(
         <>
         <input type="file" id="upload-button"  onChange={handleChange}/>
          <br />
         <div className="container mx-auto">
-            <div className="flex flex-wrap">
-                <div className="w-full  md:w-1/2 lg:w-1/2  mb-4">
-                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">PROCESAR CORTE</button>
-                {
-                    image.preview ? <img src={ image.preview } width="300" style={{ margin: 'auto'}} /> : null
-                }
-                </div>
-                <div className="w-full  md:w-1/2 lg:w-1/2  mb-4" >
-                    <Ocr image={imageOcr}/>
-                </div>
-            </div> 
+            { imageCrop !== "" && <ImgCrop imageCrop={imageCrop} event={onCropComplete} 
+                        showCroppedImage={showCroppedImage}/> }      
+            { imageOcr !== "" && <Ocr image={imageOcr} />  }
         </div> 
         
         
