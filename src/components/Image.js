@@ -3,11 +3,11 @@ import Ocr from '../components/Ocr'
 import ImgCrop from './ImgCrop'
 import  getCroppedImg from '../utils'
 
-const Image = ()=>{
+export default () => {
     const [imageCrop, setImageCrop] = useState('')
     const [imageOcr, setImageOcr] = useState('')
     const [croppedAreaPixels, setCroppedAreaPixels] = useState(null)
- 
+
     const handleChange = (e) => {
         setImageOcr("")
         setImageCrop(URL.createObjectURL(e.target.files[0]))
@@ -31,14 +31,12 @@ const Image = ()=>{
         <input type="file" id="upload-button"  onChange={handleChange}/>
          <br />
         <div className="container mx-auto">
-            { imageCrop !== "" && <ImgCrop imageCrop={imageCrop} event={onCropComplete} 
-                        showCroppedImage={showCroppedImage}/> }      
+            { imageCrop !== "" && <ImgCrop imageCrop={imageCrop} event={onCropComplete}
+                        showCroppedImage={showCroppedImage}/> }
             { imageOcr !== "" && <Ocr image={imageOcr} />  }
-        </div> 
-        
-        
+        </div>
+
+
         </>
     )
-}
-
-export default Image
+};
