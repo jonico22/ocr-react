@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { createWorker } from 'tesseract.js';
-import cabify  from '../utils/cabify.js'
+import processor  from '../utils/processor.js'
 
 export default ({image})=>{
     const [ocr, setOcr] = useState('');
@@ -26,7 +26,7 @@ export default ({image})=>{
           }
 
       },[image]);
-    return( cabify(list) ||
+    return( processor(list, 1) ||
         <>
          <div className="flex flex-wrap">
             <div className="w-full  md:w-1/2 lg:w-1/2  mb-4">
